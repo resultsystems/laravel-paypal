@@ -1,7 +1,5 @@
 #Instalação:
 
-Adicione no composer:
-
 ```
 composer require resultsystems/laravel-paypal
 ```
