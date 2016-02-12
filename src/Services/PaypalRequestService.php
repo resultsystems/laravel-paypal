@@ -11,9 +11,9 @@ class PaypalRequestService
     protected $username;
     protected $password;
     protected $signature;
-    protected $items = [];
+    protected $items        = [];
     protected $currencyCode = null;
-    protected $certificate = false;
+    protected $certificate  = false;
     protected $certificateFile;
     protected $localeCode = 'pt_BR';
 
@@ -41,9 +41,9 @@ class PaypalRequestService
      */
     public function __construct($invoice = null, $user = null, $pass = null, $signature = null)
     {
-        $this->invoice = $invoice;
-        $this->username = $user;
-        $this->password = $pass;
+        $this->invoice   = $invoice;
+        $this->username  = $user;
+        $this->password  = $pass;
         $this->signature = $signature;
 
         if (is_null($user)) {
@@ -133,12 +133,12 @@ class PaypalRequestService
 
         $items = [];
         foreach ($this->items as $key => $item) {
-            $items['L_PAYMENTREQUEST_0_NAME'.$key] = $item->name;
-            $items['L_PAYMENTREQUEST_0_DESC'.$key] = $item->description;
-            $items['L_PAYMENTREQUEST_0_AMT'.$key] = $item->amount;
-            $items['L_PAYMENTREQUEST_0_QTY'.$key] = $item->quantity;
-            $items['L_PAYMENTREQUEST_0_ITEMAMT'.$key] = $item->item_amount;
+            $items['L_PAYMENTREQUEST_0_NAME' . $key] = $item->name;
+            $items['L_PAYMENTREQUEST_0_DESC' . $key] = $item->description;
+            $items['L_PAYMENTREQUEST_0_AMT' . $key]  = $item->amount;
+            $items['L_PAYMENTREQUEST_0_QTY' . $key]  = $item->quantity;
         }
+        $items['L_PAYMENTREQUEST_0_ITEMAMT'] = $this->getTotal();
 
         return $items;
     }
@@ -171,15 +171,15 @@ class PaypalRequestService
     {
         $requestNvp = $this->getCredentials();
         $requestNvp = array_merge($requestNvp, [
-            'METHOD' => 'SetExpressCheckout',
+            'METHOD'                         => 'SetExpressCheckout',
             'PAYMENTREQUEST_0_PAYMENTACTION' => 'SALE',
-            'PAYMENTREQUEST_0_AMT' => (string) $this->getTotal(),
-            'PAYMENTREQUEST_0_CURRENCYCODE' => $this->getCurrencyCode(),
-            'PAYMENTREQUEST_0_ITEMAMT' => (string) $this->getTotal(),
-            'PAYMENTREQUEST_0_INVNUM' => (string) $this->invoice,
+            'PAYMENTREQUEST_0_AMT'           => (string) $this->getTotal(),
+            'PAYMENTREQUEST_0_CURRENCYCODE'  => $this->getCurrencyCode(),
+            'PAYMENTREQUEST_0_ITEMAMT'       => (string) $this->getTotal(),
+            'PAYMENTREQUEST_0_INVNUM'        => (string) $this->invoice,
 
-            'RETURNURL' => Config::get('paypal.returnurl', ''),
-            'CANCELURL' => Config::get('paypal.cancelurl', ''),
+            'RETURNURL'    => Config::get('paypal.returnurl', ''),
+            'CANCELURL'    => Config::get('paypal.cancelurl', ''),
             'BUTTONSOURCE' => Config::get('paypal.buttonsource', ''),
         ], $this->getItems());
 
@@ -191,7 +191,7 @@ class PaypalRequestService
         };
 
         $query = [
-            'cmd' => '_express-checkout',
+            'cmd'   => '_express-checkout',
             'token' => $responseNvp['TOKEN'],
         ];
 
@@ -213,7 +213,7 @@ class PaypalRequestService
             };
 
             $query = [
-                'cmd' => '_express-checkout',
+                'cmd'   => '_express-checkout',
                 'token' => $response['TOKEN'],
             ];
 
@@ -265,7 +265,7 @@ class PaypalRequestService
     protected function sendNvpRequest(array $requestNvp, $sandbox = false)
     {
         //Endpoint da API
-        $apiEndpoint = 'https://api-3t.'.($sandbox ? 'sandbox.' : null);
+        $apiEndpoint = 'https://api-3t.' . ($sandbox ? 'sandbox.' : null);
         $apiEndpoint .= 'paypal.com/nvp';
         //Executando a operação
         $curl = curl_init();
@@ -298,11 +298,11 @@ class PaypalRequestService
 
         if (isset($responseNvp['ACK']) && $responseNvp['ACK'] != 'Success') {
             $errors = [];
-            for ($i = 0;isset($responseNvp['L_ERRORCODE'.$i]); ++$i) {
+            for ($i = 0;isset($responseNvp['L_ERRORCODE' . $i]); ++$i) {
                 $message = sprintf("PayPal NVP %s[%d]: %s\n",
-                    $responseNvp['L_SEVERITYCODE'.$i],
-                    $responseNvp['L_ERRORCODE'.$i],
-                    $responseNvp['L_LONGMESSAGE'.$i]);
+                    $responseNvp['L_SEVERITYCODE' . $i],
+                    $responseNvp['L_ERRORCODE' . $i],
+                    $responseNvp['L_LONGMESSAGE' . $i]);
 
                 $errors[] = $message;
             }
@@ -321,7 +321,7 @@ class PaypalRequestService
      */
     public function setCertificateFile($file)
     {
-        $this->certificate = true;
+        $this->certificate     = true;
         $this->certificateFile = $file;
 
         return $this;
@@ -338,13 +338,13 @@ class PaypalRequestService
         //    $usernameSandbox = 'conta-business_api1.test.com';
         //    $passwordSandbox = '1365001380';
         //    $signatureSandbox = 'AiPC9BjkCyDFQXbSkoZcgqH3hpacA-p.YLGfQjc0EobtODs.fMJNajCx';
-        $user = $this->username;
-        $pswd = $this->password;
+        $user      = $this->username;
+        $pswd      = $this->password;
         $signature = $this->signature;
 
         if ($this->sandbox) {
-            $user = env('PAYPAL_SANDBOX_USERNAME', $user);
-            $pswd = env('PAYPAL_SANDBOX_PASSWORD', $pswd);
+            $user      = env('PAYPAL_SANDBOX_USERNAME', $user);
+            $pswd      = env('PAYPAL_SANDBOX_PASSWORD', $pswd);
             $signature = env('PAYPAL_SANDBOX_SIGNATURE', $signature);
         }
 
@@ -366,9 +366,9 @@ class PaypalRequestService
 
         $requestNvp = [
             'USER' => $user,
-            'PWD' => $pswd,
+            'PWD'  => $pswd,
 
-            'VERSION' => Config::get('paypal.version', '108.0'),
+            'VERSION'    => Config::get('paypal.version', '108.0'),
             'LOCALECODE' => $this->localeCode,
         ];
 
@@ -396,7 +396,7 @@ class PaypalRequestService
         $requestNvp = $this->getCredentials();
         $requestNvp = array_merge($requestNvp, [
             'METHOD' => 'GetExpressCheckoutDetails',
-            'TOKEN' => $token,
+            'TOKEN'  => $token,
         ]);
 
         return $this->sendNvpRequest($requestNvp, $this->sandbox);
@@ -413,9 +413,9 @@ class PaypalRequestService
     {
         $requestNvp = $this->getCredentials();
         $requestNvp = array_merge($requestNvp, $this->getDatails($token), [
-            'METHOD' => 'DoExpressCheckoutPayment',
+            'METHOD'    => 'DoExpressCheckoutPayment',
             'NOTIFYURL' => Config::get('paypal.notifyurl', 'http://paypal.app/paypal/ipn'),
-            'TOKEN' => $token,
+            'TOKEN'     => $token,
         ]);
 
         return $this->sendNvpRequest($requestNvp, $this->sandbox);
@@ -524,8 +524,8 @@ class PaypalRequestService
         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
 
         $response = curl_exec($curl);
-        $error = curl_error($curl);
-        $errno = curl_errno($curl);
+        $error    = curl_error($curl);
+        $errno    = curl_errno($curl);
 
         curl_close($curl);
 
@@ -564,18 +564,18 @@ class PaypalRequestService
     public function refundTransaction($transactionId, $note = null, $amount = null)
     {
         $requestNvp = $this->getCredentials();
-        $type = ['REFUNDTYPE' => 'Full'];
+        $type       = ['REFUNDTYPE' => 'Full'];
         if (!is_null($amount)) {
             $type = [
-                'REFUNDTYPE' => 'Partial',
-                'AMT' => str_replace(',', '.', str_replace('.', '', $amount)),
-                'CURRENCYCODE' => $this->getCurrencyCode(), ];
+                'REFUNDTYPE'   => 'Partial',
+                'AMT'          => str_replace(',', '.', str_replace('.', '', $amount)),
+                'CURRENCYCODE' => $this->getCurrencyCode()];
         }
 
         $requestNvp = array_merge($requestNvp, [
             'METHOD' => 'RefundTransaction',
 
-            'TRANSACTIONID' => $transactionId, ], $type);
+            'TRANSACTIONID' => $transactionId], $type);
 
         //Envia a requisição e obtém a resposta da PayPal
         if (!is_null($note)) {
