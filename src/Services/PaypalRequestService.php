@@ -138,7 +138,7 @@ class PaypalRequestService
             $items['L_PAYMENTREQUEST_0_AMT' . $key]  = $item->amount;
             $items['L_PAYMENTREQUEST_0_QTY' . $key]  = $item->quantity;
         }
-        $items['L_PAYMENTREQUEST_0_ITEMAMT'] = $this->getTotal();
+        // $items['L_PAYMENTREQUEST_0_ITEMAMT'] = $this->getTotal();
 
         return $items;
     }
@@ -178,9 +178,9 @@ class PaypalRequestService
             'PAYMENTREQUEST_0_ITEMAMT'       => (string) $this->getTotal(),
             'PAYMENTREQUEST_0_INVNUM'        => (string) $this->invoice,
 
-            'RETURNURL'    => Config::get('paypal.returnurl', ''),
-            'CANCELURL'    => Config::get('paypal.cancelurl', ''),
-            'BUTTONSOURCE' => Config::get('paypal.buttonsource', ''),
+            'RETURNURL' => Config::get('paypal.returnurl', ''),
+            'CANCELURL' => Config::get('paypal.cancelurl', ''),
+//            'BUTTONSOURCE' => Config::get('paypal.buttonsource', ''),
         ], $this->getItems());
 
         //Envia a requisição e obtém a resposta da PayPal
