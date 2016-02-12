@@ -3,12 +3,16 @@
 Adicione no composer:
 
 ```
+composer require resultsystems/laravel-paypal
+```
+ou se preferir, adicione o seguinte trecho manualmente:
+
+```
 "require" : {
-	"resultsystems/laravel-paypal": "dev-master"
+	"resultsystems/laravel-paypal": "~0.1"
 },
 
 ```
-
 
 #Uso em sandbox
 
