@@ -122,13 +122,13 @@ class PaypalRequestService
         if ($total > 0) {
             return $total;
         }
-        throw PaypalRequestException('Total is not valid');
+        throw new PaypalRequestException('Total is not valid');
     }
 
     protected function getItems()
     {
         if (count($this->items) < 1) {
-            throw PaypalRequestException('No items');
+            throw new PaypalRequestException('No items');
         }
 
         $items = [];
@@ -349,19 +349,19 @@ class PaypalRequestService
         }
 
         if (is_null($user) || is_null($pswd)) {
-            throw PaypalRequestException('No credentials');
+            throw new PaypalRequestException('No credentials');
         }
 
         if (is_null($signature) && !$this->certificate) {
-            throw PaypalRequestException('No credentials');
+            throw new PaypalRequestException('No credentials');
         }
 
         if (is_null($user) || is_null($pswd)) {
-            throw PaypalRequestException('No credentials');
+            throw new PaypalRequestException('No credentials');
         }
 
         if (is_null($signature) && !$this->certificate) {
-            throw PaypalRequestException('No credentials');
+            throw new PaypalRequestException('No credentials');
         }
 
         $requestNvp = [
