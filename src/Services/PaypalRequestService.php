@@ -190,7 +190,7 @@ class PaypalRequestService
         };
 
         if (!isset($responseNvp['TOKEN'])) {
-            throw new PaypalRequestException("Token don't exists.");
+            throw new PaypalRequestException("Token doesn't exists.");
         }
 
         $query = [
