@@ -185,10 +185,13 @@ class PaypalRequestService
 
         //Envia a requisição e obtém a resposta da PayPal
         $responseNvp = $this->sendNvpRequest($requestNvp, $this->sandbox);
-
         if (is_callable($callback)) {
             return $callback($responseNvp);
         };
+
+        if (!isset($responseNvp['TOKEN'])) {
+            throw new PaypalRequestException("Token don't exists.");
+        }
 
         $query = [
             'cmd'   => '_express-checkout',
