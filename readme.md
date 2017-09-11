@@ -1,4 +1,4 @@
-#Instalação:
+# Instalação:
 
 ```
 composer require resultsystems/laravel-paypal
@@ -12,7 +12,7 @@ ou se preferir, adicione o seguinte trecho manualmente:
 
 ```
 
-#Uso em sandbox
+## Uso em sandbox
 
 Opcionalmente você pode criar em seu arquivo .env
 As seguintes variaveis:
@@ -20,12 +20,12 @@ PAYPAL_SANDBOX_USERNAME=nome do usuário para sandbox
 PAYPAL_SANDBOX_PASSWORD=senha do usuário para sandbox
 PAYPAL_SANDBOX_SIGNATURE=assinatura para sandbox
 
-##Class para uso em Sandbox
+### Class para uso em Sandbox
 
 Você pode apenas instanciar a classe `PaypalSandboxRequestService` em vez da `PaypalRequestService` para uso em sandbox
 
 
-#Exemplos de uso
+## Exemplos de uso
 
 ```
 /**
@@ -123,7 +123,7 @@ $paypal = new \ResultSystems\Paypal\Services\PaypalRequestService(15, 'usuario',
 $paypla->setCertificateFile('certificado.txt');
 ```
 
-#Estorno total
+## Estorno total
 ```
     $paypal = new \ResultSystems\Paypal\Services\PaypalRequestService;
     $transactionId=$_POST["transactionId"];
@@ -137,7 +137,7 @@ $paypla->setCertificateFile('certificado.txt');
     }
 ```
 
-#Estorno parcial
+## Estorno parcial
 ```
     $paypal = new \ResultSystems\Paypal\Services\PaypalRequestService;
     $transactionId=$_POST["transactionId"];
@@ -152,7 +152,7 @@ $paypla->setCertificateFile('certificado.txt');
     }
 ```
 
-#Métodos públicos
+## Métodos públicos
 
 ```
 /**
