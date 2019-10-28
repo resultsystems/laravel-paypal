@@ -1,6 +1,6 @@
 {
   "name": "resultsystems/laravel-paypal",
-  "description": "Paypal Solution for Laravel 5.1",
+  "description": "Paypal Solution for Laravel 5.X",
   "license": "MIT",
   "authors": [
     {
